@@ -39,12 +39,3 @@ st.plotly_chart(figure_3)
 st.header("Visualization 4: Distribution of Revenue Growth")
 figure_4 = px.box(filtered_df, y='Revenue growth', title='Distribution of Revenue Growth')
 st.plotly_chart(figure_4)
-
-# Visualization 5: Treemap of Revenue Distribution by Industry
-st.header("Visualization 5: Revenue Distribution by Industry (Treemap)")
-figure_5 = px.treemap(filtered_df,
-                      path=['Industry', 'Name'],
-                      values='Revenue (USD millions)',
-                      title='Revenue Distribution by Industry (Treemap)')
-
-st.plotly_chart(figure_5)
