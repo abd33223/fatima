@@ -11,8 +11,11 @@ st.sidebar.header("Filters")
 # Filter by Industry
 selected_industry = st.sidebar.selectbox("Select an Industry", df['Industry'].unique())
 
+# Filter by Country
+selected_country = st.sidebar.selectbox("Select a Country", df['Country'].unique())
+
 # Apply filters to the DataFrame
-filtered_df = df[df['Industry'] == selected_industry]
+filtered_df = df[(df['Industry'] == selected_industry) & (df['Country'] == selected_country)]
 
 # Visualization 1: Bargraph of Top 10 Companies with Highest Revenues
 st.header("Visualization 1: Top 10 Companies with Highest Revenues")
@@ -27,12 +30,12 @@ figure_2 = px.scatter(filtered_df, x='Revenue (USD millions)', y='Employees',
                   labels={'Revenue (USD millions)': 'Revenue in USD (Millions)', 'Employees': 'Number of Employees'})
 st.plotly_chart(figure_2)
 
-# Visualization 3: Pie Chart of Distribution of Companies Over Industries
-st.header("Visualization 3: Distribution of Companies Over Industries")
-industry_distribution = filtered_df['Industry'].value_counts().reset_index()
-industry_distribution.columns = ['Industry', 'Count']
-figure_3 = px.pie(industry_distribution, names='Industry', values='Count',
-              title='Distribution of Companies Over Industries')
+# Visualization 3: Bar Chart of Distribution of Companies by Country
+st.header("Visualization 3: Distribution of Companies by Country")
+country_distribution = filtered_df['Country'].value_counts().reset_index()
+country_distribution.columns = ['Country', 'Count']
+figure_3 = px.bar(country_distribution, x='Country', y='Count',
+              title='Distribution of Companies by Country')
 st.plotly_chart(figure_3)
 
 # Visualization 4: Barplot of Distribution of Revenue Growth
