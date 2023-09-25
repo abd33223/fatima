@@ -13,12 +13,25 @@ filter_options = {}
 
 # Add all columns to the filter options
 for column in df.columns:
-    filter_options[column] = st.sidebar.selectbox(f"Select a {column}", df[column].unique())
+    if column in ["Revenue (USD millions)", "Revenue growth", "Employees"]:
+        # Add sliders for specific columns
+        min_value = df[column].min()
+        max_value = df[column].max()
+        filter_options[column] = st.sidebar.slider(f"Select a value for {column}", min_value, max_value, (min_value, max_value))
+    else:
+        # Add selectboxes for other columns
+        filter_options[column] = st.sidebar.selectbox(f"Select a {column}", df[column].unique())
 
 # Apply filters to the DataFrame
 filtered_df = df
 for column, selected_value in filter_options.items():
-    filtered_df = filtered_df[filtered_df[column] == selected_value]
+    if column in ["Revenue (USD millions)", "Revenue growth", "Employees"]:
+        # Filter based on slider values for specific columns
+        min_value, max_value = selected_value
+        filtered_df = filtered_df[(filtered_df[column] >= min_value) & (filtered_df[column] <= max_value)]
+    else:
+        # Filter based on selectbox values for other columns
+        filtered_df = filtered_df[filtered_df[column] == selected_value]
 
 # Visualization 1: Bargraph of Top 10 Companies with Highest Revenues
 st.header("Visualization 1: Top 10 Companies with Highest Revenues")
